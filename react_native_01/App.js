@@ -12,6 +12,7 @@ import Header from './src/header';
 import Generator from './src/generator';
 import NumList from './src/numlist';
 import Input from './src/input';
+import Picker from './src/picker';
 
 class App extends Component {
   state = {
@@ -60,6 +61,7 @@ onAddTextInput = () => {
   render() {
     return (
       <View style={styles.mainView}>
+        <Picker/>
         {/* <Header name={this.state.appName}/>
 
         <View>
