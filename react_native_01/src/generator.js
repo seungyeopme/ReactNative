@@ -7,19 +7,26 @@
  */
 
 import React from 'react';
-import { View, Text, StyleSheet, Button } from 'react-native';
+import { View, Text, StyleSheet, Button, ProgressViewIOSComponent } from 'react-native';
 
-const Generator = () => {
+const Generator = (props) => {
     return (
-        <View>
+        <View style={styles.generator}>
             <Button
                 title="Add Number"
+                onPress={()=>props.add()}
             />
         </View>
     )
 }
 
 const styles = StyleSheet.create({
+    generator: {
+        backgroundColor: '#D197CF',
+        alignItems: 'center',
+        padding: 5,
+        width: '100%'
+    }
     
 })
   
