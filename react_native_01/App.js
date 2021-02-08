@@ -89,7 +89,7 @@ onAddTextInput = () => {
         </ScrollView> */}
 
         {/* <Input/> */}
-        <TextInput
+        {/* <TextInput
             value={this.state.myTextInput}
             style={styles.input}
             onChangeText={this.onChangeInput}
@@ -114,7 +114,7 @@ onAddTextInput = () => {
               </Text>
             ))
           }
-        </ScrollView>
+        </ScrollView> */}
       </View>
     )
   }
