@@ -8,12 +8,15 @@
 
 import React, {Component} from 'react';
 import { TextInput, Button, View, Text, StyleSheet, ScrollView, Image } from 'react-native';
+import Hello from './src/helloworld';
 import Header from './src/header';
 import Generator from './src/generator';
 import NumList from './src/numlist';
 import Input from './src/input';
 import Picker from './src/picker';
-import Steak from './assets/images/steak.jpg'
+import Steak from './assets/images/steak.jpg';
+import Modal from './src/modal';
+import HelloComponent from './src/helloworld';
 
 class App extends Component {
   state = {
@@ -62,10 +65,13 @@ onAddTextInput = () => {
   render() {
     return (
       <View style={styles.mainView}>
-        <Image
+        <Modal/>
+        {/* <Image
           style={styles.image}
-          source={Steak}
-        />
+          source={{uri: 'https://picsum.photos/id/237/200/300'}}
+          resizeMode="contain"
+          onLoadEnd={()=>alert('Image Loaded!!!')}
+        /> */}
         
         {/* <Picker/> */}
         {/* <Header name={this.state.appName}/>
@@ -121,6 +127,7 @@ onAddTextInput = () => {
             ))
           }
         </ScrollView> */}
+        {/* <Hello/> */}
       </View>
     )
   }
@@ -162,8 +169,9 @@ const styles = StyleSheet.create({
     padding: 10
   },
   image: {
+    backgroundColor: 'red',
     width: '100%',
-    height: 300
+    height: 700
   }
 })
 
