@@ -10,6 +10,7 @@ import React, { Component } from 'react';
 import { StyleSheet, View, Text, Image, Button, Linking } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { 
   createDrawerNavigator,
   DrawerContentScrollView,
@@ -21,11 +22,47 @@ import UserScreen from './src/user';
 import LogoTitle from './src/logo';
 import DrawerHomeScreen from './src/home_drawer';
 import DrawerUserScreen from './src/user_drawer';
+import TabHomeScreen from './src/home_tab';
+import TabUserScreen from './src/user_tab';
+import TabMessageScreen from './src/message_tab';
 import PictogramHome from './src/assets/pics/home_icon.png';
 import SideDrawer from './src/my_drawer';
+import Icon from 'react-native-vector-icons/dist/Ionicons';
+import Ionicons from 'react-native-vector-icons/dist/Ionicons';
 
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
+const Tab = createBottomTabNavigator();
+
+const TabBarIcon = (focused, name) => {
+  let iconImagePath;
+  let iconName, iconSize;
+
+  if (name==='Home') {
+    iconName = 'home-outline'
+    //iconImagePath = require('./src/assets/pics/home_icon.png')
+  } else if (name==='User') {
+    iconName = 'people-outline'
+    //iconImagePath = require('./src/assets/pics/user.png')
+  } else if (name==='Message') {
+    iconName = 'mail-outline'
+    //iconImagePath = require('./src/assets/pics/message.png')
+  }
+
+  iconSize = focused ? 30 : 20
+  return (
+    <Ionicons
+      name={iconName}
+      size={iconSize}
+    />
+    //   style={{
+    //     width: focused ? 30 : 20,
+    //     height: focused ? 30 : 20,
+    //   }}
+    //   source = {iconImagePath}
+    // />
+  )
+}
 
 // CustomDrawerContent = (props) => {
 //   return (
@@ -59,35 +96,61 @@ class App extends Component {
   render () {
     return (
       <NavigationContainer>
-        <Drawer.Navigator
+        <Tab.Navigator
           initialRouteName="Home"
-          drawerType="front"
-          drawerPosition='right'
-          drawerStyle={{
-            backgroundColor: '#c6cbef',
-            width: 200
+          tabBarOptions={{
+            activeBackgroundColor: 'skyblue',
+            activeTintColor: 'blue',
+            inactiveTintColor: '#fff',
+            style: {
+              backgroundColor: '#c6cbef'
+            },
+            labelPosition: 'below-icon'
           }}
-          drawerContentOptions={{
-            activeTintColor: 'red',
-            activeBackgroundColor: 'skyblue'
-          }}
-          drawerContent={props => <SideDrawer {...props} />}
+          screenOptions={({route})=>({
+            tabBarLabel: route.name,
+            tabBarIcon: ({focused})=>(
+              TabBarIcon(focused, route.name)
+            )
+          })}
         >
-          <Drawer.Screen 
-            name="Home" 
-            component={DrawerHomeScreen}
-            options={{
-              drawerIcon: () => (
-                <Image
-                  source={PictogramHome}
-                  style={{width: 40, height: 40}}
-                />
-              )
-            }}
-          />
-          <Drawer.Screen name="User" component={DrawerUserScreen}/>
-        </Drawer.Navigator>
+          <Tab.Screen name="Home" component={TabHomeScreen}/>
+          <Tab.Screen name="User" component={TabUserScreen}/>
+          <Tab.Screen name="Message" component={TabUserScreen}/>
+        </Tab.Navigator>
       </NavigationContainer>
+
+
+      // <NavigationContainer>
+      //   <Drawer.Navigator
+      //     initialRouteName="Home"
+      //     drawerType="front"
+      //     drawerPosition='right'
+      //     drawerStyle={{
+      //       backgroundColor: '#c6cbef',
+      //       width: 200
+      //     }}
+      //     drawerContentOptions={{
+      //       activeTintColor: 'red',
+      //       activeBackgroundColor: 'skyblue'
+      //     }}
+      //     drawerContent={props => <SideDrawer {...props} />}
+      //   >
+      //     <Drawer.Screen 
+      //       name="Home" 
+      //       component={DrawerHomeScreen}
+      //       options={{
+      //         drawerIcon: () => (
+      //           <Image
+      //             source={PictogramHome}
+      //             style={{width: 40, height: 40}}
+      //           />
+      //         )
+      //       }}
+      //     />
+      //     <Drawer.Screen name="User" component={DrawerUserScreen}/>
+      //   </Drawer.Navigator>
+      // </NavigationContainer>
       // <NavigationContainer>
       //   <Stack.Navigator 
       //     initialRouteName="Home"
