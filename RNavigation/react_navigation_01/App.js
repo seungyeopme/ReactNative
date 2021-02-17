@@ -7,8 +7,8 @@
  */
 import 'react-native-gesture-handler';
 import React, { Component } from 'react';
-import { StyleSheet, View, Text, Image, Button, Linking } from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
+import { StyleSheet, View, Text, Image, Button, Linking, TouchableOpacity } from 'react-native';
+import { NavigationContainer, DrawerActions, useNavigation } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { 
@@ -17,7 +17,7 @@ import {
   DrawerItemList,
   DrawerItem 
 } from '@react-navigation/drawer';
-import HomeScreen from './src/home';
+import StackHomeScreen from './src/home';
 import UserScreen from './src/user';
 import LogoTitle from './src/logo';
 import DrawerHomeScreen from './src/home_drawer';
@@ -33,6 +33,82 @@ import Ionicons from 'react-native-vector-icons/dist/Ionicons';
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
 const Tab = createBottomTabNavigator();
+
+/*
+    Stack Navigator
+      - Tab Navigator
+        - Tab Screen D
+        - Tab Screen E
+        - Tab Navigator
+          - Tab Screen F
+          - Tab Screen G
+      - Stack Screen B
+      - Stack Screen c
+*/
+
+/*
+    Stack Navigator
+      - Drawer Navigator
+        - Drawer Screen D
+        - Drawer Screen E
+        - Drawer Screen F
+      - Stack Screen B
+      - Stack Screen c
+*/
+
+const TabComponent = () => {
+  return (
+    <Tab.Navigator
+          initialRouteName="Home"
+          tabBarOptions={{
+            activeBackgroundColor: 'skyblue',
+            activeTintColor: 'blue',
+            inactiveTintColor: '#fff',
+            style: {
+              backgroundColor: '#c6cbef'
+            },
+            labelPosition: 'below-icon'
+          }}
+          screenOptions={({route})=>({
+            tabBarLabel: route.name,
+            tabBarIcon: ({focused})=>(
+              TabBarIcon(focused, route.name)
+            )
+          })}
+        >
+          <Tab.Screen name="Home" component={TabHomeScreen}/>
+          <Tab.Screen name="User" component={TabUserScreen}/>
+          <Tab.Screen name="Message" component={TabMessageScreen}/>
+        </Tab.Navigator>
+  )
+}
+
+// MainScreen = () => {
+//   return (
+//     <Tab.Navigator
+//           initialRouteName="Home"
+//           tabBarOptions={{
+//             activeBackgroundColor: 'skyblue',
+//             activeTintColor: 'blue',
+//             inactiveTintColor: '#fff',
+//             style: {
+//               backgroundColor: '#c6cbef'
+//             },
+//             labelPosition: 'below-icon'
+//           }}
+//           screenOptions={({route})=>({
+//             tabBarLabel: route.name,
+//             tabBarIcon: ({focused})=>(
+//               TabBarIcon(focused, route.name)
+//             )
+//           })}
+//         >
+//           <Tab.Screen name="Home" component={TabHomeScreen}/>
+//           <Tab.Screen name="User" component={TabUserScreen}/>
+//           <Tab.Screen name="Message" component={TabMessageScreen}/>
+//         </Tab.Navigator>
+//   )
+// }
 
 const TabBarIcon = (focused, name) => {
   let iconImagePath;
@@ -81,6 +157,42 @@ const TabBarIcon = (focused, name) => {
 //   )
 // }
 
+const DrawerComponent =() => {
+  return(
+      <Drawer.Navigator
+          initialRouteName="Home"
+          drawerType="front"
+          drawerPosition='right'
+          drawerStyle={{
+            backgroundColor: '#c6cbef',
+            width: 200
+          }}
+          drawerContentOptions={{
+            activeTintColor: 'red',
+            activeBackgroundColor: 'skyblue'
+          }}
+          drawerContent={props => <SideDrawer {...props} />}
+        >
+          <Drawer.Screen name="Route" component={TabComponent}/>
+        </Drawer.Navigator>
+  )
+}
+
+
+const HeaderRight = () => {
+  const navigation = useNavigation();
+  return (
+    <View style={{flexDirection: 'row', paddingRight: 15}}>
+      <TouchableOpacity
+        onPress={()=>{
+          navigation.dispatch(DrawerActions.openDrawer())
+        }}
+      >
+        <Text>Open</Text>
+      </TouchableOpacity>
+    </View>
+  )
+}
 class App extends Component {
 
 //   logoTitle = () => {
@@ -96,29 +208,42 @@ class App extends Component {
   render () {
     return (
       <NavigationContainer>
-        <Tab.Navigator
-          initialRouteName="Home"
-          tabBarOptions={{
-            activeBackgroundColor: 'skyblue',
-            activeTintColor: 'blue',
-            inactiveTintColor: '#fff',
-            style: {
-              backgroundColor: '#c6cbef'
-            },
-            labelPosition: 'below-icon'
-          }}
-          screenOptions={({route})=>({
-            tabBarLabel: route.name,
-            tabBarIcon: ({focused})=>(
-              TabBarIcon(focused, route.name)
-            )
-          })}
-        >
-          <Tab.Screen name="Home" component={TabHomeScreen}/>
-          <Tab.Screen name="User" component={TabUserScreen}/>
-          <Tab.Screen name="Message" component={TabUserScreen}/>
-        </Tab.Navigator>
+        <Stack.Navigator>
+          <Stack.Screen 
+            name="Main" 
+            component={DrawerComponent}
+            options={{
+              headerRight: ({}) => <HeaderRight/>
+            }}  
+          />
+          <Stack.Screen name="Home_Stack" component={StackHomeScreen}/>
+        </Stack.Navigator>
       </NavigationContainer>
+
+      // <NavigationContainer>
+      //   <Tab.Navigator
+      //     initialRouteName="Home"
+      //     tabBarOptions={{
+      //       activeBackgroundColor: 'skyblue',
+      //       activeTintColor: 'blue',
+      //       inactiveTintColor: '#fff',
+      //       style: {
+      //         backgroundColor: '#c6cbef'
+      //       },
+      //       labelPosition: 'below-icon'
+      //     }}
+      //     screenOptions={({route})=>({
+      //       tabBarLabel: route.name,
+      //       tabBarIcon: ({focused})=>(
+      //         TabBarIcon(focused, route.name)
+      //       )
+      //     })}
+      //   >
+      //     <Tab.Screen name="Home" component={TabHomeScreen}/>
+      //     <Tab.Screen name="User" component={TabUserScreen}/>
+      //     <Tab.Screen name="Message" component={TabUserScreen}/>
+      //   </Tab.Navigator>
+      // </NavigationContainer>
 
 
       // <NavigationContainer>
